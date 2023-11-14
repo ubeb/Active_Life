@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coba/models/exercise.dart';
 import 'package:coba/models/exercise_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,8 +10,6 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
-  final username = FirebaseAuth.instance.currentUser!;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,7 @@ class _homepageState extends State<homepage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Good ${_getGreeting()}, ${username.email}!',
+                    'Good ${_getGreeting()}, user',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),

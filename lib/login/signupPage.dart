@@ -29,36 +29,45 @@ class _SignupPageState extends State<SignupPage> {
       if (passwordConfirmed()) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
-      }
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DataPage(
-            name: nameController.text,
-            email: emailController.text,
+        // Add user detail only if the password is confirmed
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DataPage(
+              name: nameController.text,
+              email: emailController.text,
+              uid: FirebaseAuth.instance.currentUser!.uid,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        // Passwords do not match, show Snackbar
+        showErrorMessage(context, "Passwords do not match.");
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         // Handle email already in use error
         showErrorMessage(
-            "Email is already in use. Please use a different email.");
+            context, "Email is already in use. Please use a different email.");
       } else if (e.code == 'invalid-email') {
         // Handle invalid email error
-        showErrorMessage("Invalid email address. Please enter a valid email.");
+        showErrorMessage(
+            context, "Invalid email address. Please enter a valid email.");
       } else {
         // Handle other errors
-        showErrorMessage("An error occurred: ${e.message}");
+        showErrorMessage(context, "An error occurred: ${e.message}");
       }
     }
   }
+
+// ... (rest of the code remains unchanged)
 
   //add user detail
   Future addUserDeatail(String firstName, String email) async {
     await FirebaseFirestore.instance.collection("users").add({
       'name': firstName,
       'email': email,
+      'uid': FirebaseAuth.instance.currentUser!.uid,
     });
   }
 
@@ -72,11 +81,9 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  void showErrorMessage(String message) {
-    // You can use this method to display error messages to the user
-    print(message);
-    // Optionally, show a snackbar or a dialog with the error message
-    // Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
+  void showErrorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override

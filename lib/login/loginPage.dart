@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Active Life",
                     style: TextStyle(
-                      color: Color.fromRGBO(143, 148, 251, 1),
+                      color: Colors.blue,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),

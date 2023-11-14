@@ -1,6 +1,7 @@
 import 'package:coba/tabs/Homepage.dart';
 import 'package:coba/tabs/tambah.dart';
 import 'package:coba/tabs/profile.dart';
+import 'package:coba/tabs/testpage.dart';
 import 'package:flutter/material.dart';
 
 class Tabs extends StatefulWidget {
@@ -39,7 +40,7 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         children: <Widget>[
           homepage(),
           WorkoutBuddy(),
-          Profile(),
+          testpage(),
         ],
       ),
       bottomNavigationBar: TabBar(

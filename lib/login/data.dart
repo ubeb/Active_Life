@@ -6,11 +6,13 @@ import 'package:numberpicker/numberpicker.dart';
 class DataPage extends StatefulWidget {
   final String name;
   final String email;
+  final String uid;
 
   DataPage({
     Key? key,
     required this.name,
     required this.email,
+    required this.uid,
   }) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class _DataPageState extends State<DataPage> {
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
-                      gender = value;
+                      gender = value.toString();
                     });
                   },
                 ),
@@ -66,7 +68,7 @@ class _DataPageState extends State<DataPage> {
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
-                      gender = value;
+                      gender = value.toString();
                     });
                   },
                 ),
@@ -125,13 +127,14 @@ class _DataPageState extends State<DataPage> {
             ElevatedButton(
               onPressed: () async {
                 int age = int.tryParse(ageController.text) ?? 0;
-                await usersCollection.doc(widget.name).set({
+                await usersCollection.doc().set({
                   'name': widget.name,
                   'email': widget.email,
                   'age': age,
                   'gender': gender,
                   'height': height,
                   'weight': weight,
+                  'uid': widget.uid,
                 });
                 // You can navigate to the next screen or perform any other action
                 // For now, I'm popping the screen to demonstrate returning to the previous screen

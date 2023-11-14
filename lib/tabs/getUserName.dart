@@ -16,13 +16,37 @@ class GetuserName extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Text('${data['name']}' +
-              ' ' +
-              '${data['age']}' +
-              ' ' +
-              '${data['weight']}' +
-              ' ' +
-              '${data['height']}');
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Text('Name: ${data['name']}'),
+              // Text('Age: ${data['age']}'),
+              // Text('Weight: ${data['weight']}'),
+              // Text('Height: ${data['height']}'),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('Name'),
+                subtitle: Text('${data['name']}'),
+              ),
+              ListTile(
+                leading: Icon(Icons.cake),
+                title: Text('Age'),
+                subtitle: Text('${data['age']}'),
+              ),
+              ListTile(
+                leading: Icon(Icons.fitness_center),
+                title: Text('Weight'),
+                subtitle: Text('${data['weight']}'),
+              ),
+              ListTile(
+                leading: Icon(Icons.height),
+                title: Text('Height'),
+                subtitle: Text('${data['height']}'),
+              ),
+              Text('Email: ${data['email']}'),
+              Text('uid: ${data['uid']}'),
+            ],
+          );
         }
         return Text("loading...");
       }),
