@@ -1,17 +1,17 @@
 // import 'package:flutter/foundation.dart';
 
 class Exercise {
-  final String image;
-  final String Title;
-  final String time;
-  final String difficult;
-  final String description;
+  final String name;
+  final String weight;
+  final String reps;
+  final String sets;
+  bool isCompleted;
 
   Exercise({
-    required this.image,
-    required this.Title,
-    required this.time,
-    required this.difficult,
-    required this.description,
+    required this.name,
+    required this.weight,
+    required this.reps,
+    required this.sets,
+    this.isCompleted = false,
   });
 }

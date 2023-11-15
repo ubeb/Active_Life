@@ -242,6 +242,10 @@ mockito
 2.19
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/mockito-5.4.2/
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/mockito-5.4.2/lib/
+nested
+2.12
+file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0/
+file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0/lib/
 node_preamble
 2.12
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/node_preamble-2.0.2/
@@ -310,6 +314,10 @@ pool
 2.12
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/pool-1.5.1/
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/pool-1.5.1/lib/
+provider
+2.12
+file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.1/
+file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.1/lib/
 pub_semver
 2.17
 file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/pub_semver-2.1.4/

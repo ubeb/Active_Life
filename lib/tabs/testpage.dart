@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import './getUserName.dart';
+import '../models/getUserName.dart';
 
 class testpage extends StatefulWidget {
   const testpage({super.key});
@@ -70,11 +70,20 @@ class _testpageState extends State<testpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('My Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 50),
             CircleAvatar(
               radius: 80,
               backgroundImage: AssetImage('assets/images/image009.jpg'),
@@ -83,33 +92,21 @@ class _testpageState extends State<testpage> {
               child: FutureBuilder(
                 // Use a Future.delayed to simulate a delay (for testing purposes)
                 future: Future.delayed(Duration(seconds: 1)),
-                builder: ((context, snapshot) {
-                  return ListView.builder(
-                    itemCount: docIDs.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: GetuserName(documentId: docIDs[index]),
-                      );
-                    },
-                  );
-                }),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/editProfile');
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return ListView.builder(
+                      itemCount: docIDs.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: GetuserName(documentId: docIDs[index]),
+                        );
+                      },
+                    );
+                  } else {
+                    // Return a loading indicator or an empty container while waiting
+                    return CircularProgressIndicator();
+                  }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 45, 45, 45),
-                ),
-                child: Text('Edit Profile'),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => logout(context),
-                child: Text('logout'),
               ),
             ),
           ],

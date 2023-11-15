@@ -1,0 +1,4 @@
+#Tue Nov 14 13:13:33 ICT 2023
+base.0=E\:\\\!\!\!\! kelulusan kls 12\\fittness\\coba\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

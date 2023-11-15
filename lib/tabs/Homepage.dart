@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coba/models/exercise.dart';
 import 'package:coba/models/exercise_data.dart';
+import 'package:coba/tabs/crud.dart';
+import 'package:coba/tabs/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,14 @@ class _homepageState extends State<homepage> {
                   // Replaced with a useful button to start a workout
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Tabs(
+                            userData: {},
+                          ),
+                        ),
+                      );
                       // Add your logic for starting a workout here
                       print('Start a workout button pressed!');
                     },
@@ -60,21 +70,21 @@ class _homepageState extends State<homepage> {
                   // Horizontal ListView for recommended workout programs
                   Container(
                     height: 160,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: exercises.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          // margin: EdgeInsets.all(8),
-                          child: Container(
-                            width: 130,
-                            child: Center(
-                              child: ExerciseCard(exercise: exercises[index]),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    // child: ListView.builder(
+                    //   scrollDirection: Axis.horizontal,
+                    //   itemCount: exercises.length,
+                    //   itemBuilder: (context, index) {
+                    //     return Card(
+                    //       // margin: EdgeInsets.all(8),
+                    //       child: Container(
+                    //         width: 130,
+                    //         child: Center(
+                    //           child: ExerciseCard(exercise: exercises[index]),
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                   ),
                 ],
               ),
@@ -94,12 +104,12 @@ class _homepageState extends State<homepage> {
                   // Vertical ListView for workouts provided by the app
                   Container(
                     height: 200,
-                    child: ListView.builder(
-                      itemCount: exercises.length,
-                      itemBuilder: (context, index) {
-                        return ExerciseCard(exercise: exercises[index]);
-                      },
-                    ),
+                    // child: ListView.builder(
+                    //   itemCount: exercises.length,
+                    //   itemBuilder: (context, index) {
+                    //     return ExerciseCard(exercise: exercises[index]);
+                    //   },
+                    // ),
                   ),
                 ],
               ),
@@ -135,27 +145,27 @@ class ExerciseCard extends StatelessWidget {
       margin: EdgeInsets.all(8),
       child: Container(
         width: 120,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(exercise.image,
-                height: 80, width: 120, fit: BoxFit.cover),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(exercise.Title,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                  Text('Time: ${exercise.time}'),
-                  Text('Difficulty: ${exercise.difficult}',
-                      style: TextStyle(fontSize: 10)),
-                ],
-              ),
-            ),
-          ],
-        ),
+        // child: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Image.asset(exercise.image,
+        //         height: 80, width: 120, fit: BoxFit.cover),
+        //     Padding(
+        //       padding: EdgeInsets.all(8),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Text(exercise.Title,
+        //               style:
+        //                   TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        //           Text('Time: ${exercise.time}'),
+        //           Text('Difficulty: ${exercise.difficult}',
+        //               style: TextStyle(fontSize: 10)),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }

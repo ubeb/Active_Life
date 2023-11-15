@@ -1,5 +1,6 @@
 import 'package:coba/tabs/Homepage.dart';
-import 'package:coba/tabs/tambah.dart';
+import 'package:coba/tabs/crud.dart';
+import 'package:coba/tabs/workout_page.dart';
 import 'package:coba/tabs/profile.dart';
 import 'package:coba/tabs/testpage.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         controller: _tabController,
         children: <Widget>[
           homepage(),
-          WorkoutBuddy(),
+          crud(),
           testpage(),
         ],
       ),
