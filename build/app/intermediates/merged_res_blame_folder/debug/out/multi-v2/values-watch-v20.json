@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.coba.app-mergeDebugResources-14:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.example.coba.app-mergeDebugResources-16:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\8388cb318dfa3b30f4c5a91a275ee645\\transformed\\jetified-play-services-auth-17.0.0\\res\\values-watch-v20\\values.xml",

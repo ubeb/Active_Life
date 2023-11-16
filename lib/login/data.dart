@@ -1,3 +1,4 @@
+import 'package:coba/tabs/tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -167,25 +168,24 @@ class _DataPageState extends State<DataPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // int age = int.tryParse(ageController.text.split('/')[2]) ?? 0;
-                // await usersCollection.doc().set({
-                //   'name': widget.name,
-                //   'email': widget.email,
-                //   'age': age,
-                //   'gender': gender,
-                //   'height': height,
-                //   'weight': weight,
-                //   'uid': widget.uid,
-                // });
-                Navigator.pop(context);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => Tabs(
-                //       userData: {},
-                //     ),
-                //   ),
-                // );
+                int age = int.tryParse(ageController.text.split('/')[2]) ?? 0;
+                await usersCollection.doc().set({
+                  'name': widget.name,
+                  'email': widget.email,
+                  'age': age,
+                  'gender': gender,
+                  'height': height,
+                  'weight': weight,
+                  'uid': widget.uid,
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Tabs(
+                      userData: {},
+                    ),
+                  ),
+                );
               },
               child: Text('Lanjutkan'),
             ),

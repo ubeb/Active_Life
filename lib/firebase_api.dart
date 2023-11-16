@@ -1,3 +1,4 @@
+import 'package:coba/main.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseApi {
@@ -7,5 +8,16 @@ class FirebaseApi {
     await _firebaseMessaging.requestPermission();
     final FCMToken = await _firebaseMessaging.getToken();
     print('print: $FCMToken');
+    initNotifications();
+  }
+
+  void handleMessage(RemoteMessage? message) {
+    if (message == null) return;
+    navigatorKey.currentState?.pushNamed('/notifpage', arguments: message);
+  }
+
+  Future initPushNotifications() async {
+    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
 }

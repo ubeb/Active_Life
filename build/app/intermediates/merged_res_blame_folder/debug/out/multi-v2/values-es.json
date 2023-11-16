@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.coba.app-mergeDebugResources-14:/values-es/values-es.xml",
+            "outputFile": "com.example.coba.app-mergeDebugResources-16:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\aba8f806953ea3dd8f794da3aeb78a12\\transformed\\jetified-play-services-base-18.0.1\\res\\values-es\\values.xml",
