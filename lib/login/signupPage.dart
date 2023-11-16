@@ -25,10 +25,18 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future signUp(BuildContext context) async {
+    if (nameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
+      // Show an error message if any of the fields is empty
+      showErrorMessage(context, "Please fill in all the fields.");
+      return;
+    }
     try {
       if (passwordConfirmed()) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
+        // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        //     email: emailController.text, password: passwordController.text);
         // Add user detail only if the password is confirmed
         Navigator.pushReplacement(
           context,

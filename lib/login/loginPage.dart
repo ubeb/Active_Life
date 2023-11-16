@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _isHidden = true; // Changed variable name for clarity
   bool _pageLogin = true;
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   void _togglePage(bool switchToLogin) {
@@ -61,16 +61,33 @@ class _LoginPageState extends State<LoginPage> {
 
   // Simulated login function (replace with your actual authentication logic)
   void _login() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      // Show an error message if any of the fields is empty
+      showErrorMessage(context, "Please fill in all the fields.");
+      return;
+    }
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: usernameController.text, password: passwordController.text);
+          email: emailController.text, password: passwordController.text);
     } on FirebaseAuthException catch (e) {
+      // Handle specific authentication errors and show user-friendly messages
       if (e.code == 'user-not-found') {
-        wrongEmail();
+        showErrorMessage(context, "User not found. Please check your email.");
       } else if (e.code == 'wrong-password') {
-        wrongPassword();
+        showErrorMessage(context, "Incorrect password. Please try again.");
+      } else if (e.code == 'invalid-email') {
+        showErrorMessage(
+            context, "Invalid email address. Please enter a valid email.");
+      } else {
+        showErrorMessage(context, "An error occurred: ${e.message}");
       }
     }
+  }
+
+  void showErrorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _toggleVisibility() {
@@ -137,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: <Widget>[
                           TextField(
-                            controller: usernameController,
+                            controller: emailController,
                             style: TextStyle(
                                 color: Color.fromARGB(255, 128, 128, 128)),
                             decoration: InputDecoration(

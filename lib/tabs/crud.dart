@@ -132,13 +132,11 @@ class _crudState extends State<crud> {
             onPressed: () async {
               // Get the new workout name from the TextEditingController
               String newWorkoutName = editController.text;
-
               // Update the workout name in Firestore
               await FirebaseFirestore.instance
                   .collection('workouts')
                   .doc(snapshot.data!.docs[index].id)
                   .update({'name': newWorkoutName});
-
               Navigator.pop(context); // Close the dialog
             },
             child: Text('Save'),

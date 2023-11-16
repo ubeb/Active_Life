@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:coba/tabs/tabs.dart';
-import 'package:numberpicker/numberpicker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataPage extends StatefulWidget {
   final String name;
@@ -28,124 +26,166 @@ class _DataPageState extends State<DataPage> {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  DateTime? selectedDate;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextFormField(
-              controller: ageController,
-              decoration: InputDecoration(
-                labelText: 'Umur',
-              ),
-              keyboardType: TextInputType.number,
-            ),
+            // Date Picker for Age
             SizedBox(
-              height: 30,
+              height: 64,
             ),
             Text(
-              'Pilih Gender: ${gender ?? ""}',
-              style: TextStyle(fontSize: 15),
-            ),
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 'Laki-laki',
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                    });
-                  },
-                ),
-                Text('Laki-laki'),
-                Radio(
-                  value: 'Perempuan',
-                  groupValue: gender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value.toString();
-                    });
-                  },
-                ),
-                Text('Perempuan'),
-              ],
+              "Active Life",
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
-              height: 30,
+              height: 92,
             ),
+            InkWell(
+              onTap: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                ).then((value) {
+                  if (value != null && value != selectedDate) {
+                    setState(() {
+                      selectedDate = value;
+                      ageController.text =
+                          "${value.day}/${value.month}/${value.year}";
+                    });
+                  }
+                });
+              },
+              child: AbsorbPointer(
+                child: TextFormField(
+                  controller: ageController,
+                  decoration: InputDecoration(
+                    labelText: 'Umur',
+                    prefixIcon: Icon(Icons.calendar_today), // Calendar icon
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            // Dropdown for Gender
+            DropdownButtonFormField<String>(
+              value: gender,
+              onChanged: (value) {
+                setState(() {
+                  gender = value;
+                });
+              },
+              items: ['Laki-laki', 'Perempuan']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Pilih Gender',
+                prefixIcon: Icon(Icons.people), // People icon
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            // TextFormField for Height
             Row(
               children: [
-                Column(
-                  children: [
-                    Text(
-                      'Pilih Tinggi Badan: $height',
-                      style: TextStyle(fontSize: 15),
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Pilih Tinggi Badan',
+                      prefixIcon: Icon(Icons.height), // Height icon
                     ),
-                    NumberPicker(
-                      value: height,
-                      minValue: 100,
-                      maxValue: 220,
-                      onChanged: (value) {
-                        setState(() {
-                          height = value;
-                        });
-                      },
-                    ),
-                  ],
+                    onChanged: (value) {
+                      setState(() {
+                        height = int.tryParse(value) ?? 0;
+                      });
+                    },
+                  ),
                 ),
-                SizedBox(
-                  width: 35,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      'Pilih Berat Badan: $weight',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    NumberPicker(
-                      value: weight,
-                      minValue: 30,
-                      maxValue: 150,
-                      onChanged: (value) {
-                        setState(() {
-                          weight = value;
-                        });
-                      },
-                    ),
-                  ],
+                Container(
+                  color: Colors.blue,
+                  width: 45,
+                  height: 45,
+                  child: Text(
+                    'Cm',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 15,
+            ),
+            // TextFormField for Weight
+            Row(
+              children: [
+                // TextFormField for Weight
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Pilih Berat Badan',
+                      prefixIcon:
+                          Icon(Icons.fitness_center), // Fitness center icon
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        weight = int.tryParse(value) ?? 0;
+                      });
+                    },
+                  ),
+                ),
+                Text('Kg'),
+              ],
+            ),
+            SizedBox(
+              height: 15,
             ),
             ElevatedButton(
               onPressed: () async {
-                int age = int.tryParse(ageController.text) ?? 0;
-                await usersCollection.doc().set({
-                  'name': widget.name,
-                  'email': widget.email,
-                  'age': age,
-                  'gender': gender,
-                  'height': height,
-                  'weight': weight,
-                  'uid': widget.uid,
-                });
-                // You can navigate to the next screen or perform any other action
-                // For now, I'm popping the screen to demonstrate returning to the previous screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Tabs(
-                      userData: {},
-                    ),
-                  ),
-                );
+                // int age = int.tryParse(ageController.text.split('/')[2]) ?? 0;
+                // await usersCollection.doc().set({
+                //   'name': widget.name,
+                //   'email': widget.email,
+                //   'age': age,
+                //   'gender': gender,
+                //   'height': height,
+                //   'weight': weight,
+                //   'uid': widget.uid,
+                // });
+                Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => Tabs(
+                //       userData: {},
+                //     ),
+                //   ),
+                // );
               },
               child: Text('Lanjutkan'),
             ),

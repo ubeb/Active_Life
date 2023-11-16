@@ -1,3 +1,4 @@
+import 'package:coba/firebase_api.dart';
 import 'package:coba/models/workout_data.dart';
 import 'package:coba/splash.dart';
 import 'package:coba/tabs/editProfile.dart';
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseApi().initNotifications();
 }
 
 class MyApp extends StatelessWidget {
