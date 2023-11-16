@@ -1,7 +1,5 @@
 import 'package:coba/tabs/Homepage.dart';
 import 'package:coba/tabs/crud.dart';
-import 'package:coba/tabs/workout_page.dart';
-import 'package:coba/tabs/profile.dart';
 import 'package:coba/tabs/testpage.dart';
 import 'package:flutter/material.dart';
 

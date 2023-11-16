@@ -6,16 +6,17 @@ class ExerciseTile extends StatefulWidget {
   final String reps;
   final String sets;
   final bool isCompleted;
-  void Function(bool?)? onCheckboxChanged;
+  final void Function(bool) onCheckboxChanged;
 
-  ExerciseTile(
-      {super.key,
-      required this.exerciseName,
-      required this.weight,
-      required this.reps,
-      required this.sets,
-      required this.isCompleted,
-      required this.onCheckboxChanged});
+  ExerciseTile({
+    Key? key,
+    required this.exerciseName,
+    required this.weight,
+    required this.reps,
+    required this.sets,
+    required this.isCompleted,
+    required this.onCheckboxChanged,
+  }) : super(key: key);
 
   @override
   State<ExerciseTile> createState() => _ExerciseTileState();
@@ -29,29 +30,35 @@ class _ExerciseTileState extends State<ExerciseTile> {
       child: ListTile(
         title: Text(
           widget.exerciseName,
+          style: TextStyle(fontWeight: FontWeight.w500),
         ),
         subtitle: Row(
           children: [
             Chip(
               label: Text(
-                "${widget.weight}kg",
+                "${widget.weight} kg",
               ),
             ),
             Chip(
               label: Text(
-                "${widget.reps}reps",
+                "${widget.reps} reps",
               ),
             ),
             Chip(
               label: Text(
-                "${widget.sets}sets",
+                "${widget.sets} sets",
               ),
             ),
           ],
         ),
         trailing: Checkbox(
           value: widget.isCompleted,
-          onChanged: (value) => widget.onCheckboxChanged!(value),
+          onChanged: (bool? value) {
+            // Use null-aware operator to handle null value
+            if (value != null) {
+              widget.onCheckboxChanged(value);
+            }
+          },
         ),
       ),
     );

@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coba/models/exercise.dart';
-import 'package:coba/models/exercise_data.dart';
-import 'package:coba/tabs/crud.dart';
 import 'package:coba/tabs/tabs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class homepage extends StatefulWidget {

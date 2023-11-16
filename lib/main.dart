@@ -1,4 +1,4 @@
-import 'package:coba/models/exercise_data.dart';
+import 'package:coba/models/workout_data.dart';
 import 'package:coba/splash.dart';
 import 'package:coba/tabs/editProfile.dart';
 // ignore: unused_import

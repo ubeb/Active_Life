@@ -138,15 +138,19 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           TextField(
                             controller: usernameController,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 128, 128, 128)),
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "Username",
+                              hintText: "Email",
                               hintStyle: TextStyle(color: Colors.grey[400]),
                             ),
                           ),
                           TextField(
                             controller: passwordController,
                             obscureText: _isHidden,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 128, 128, 128)),
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(_isHidden

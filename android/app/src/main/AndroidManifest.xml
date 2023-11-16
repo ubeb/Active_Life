@@ -2,7 +2,7 @@
     <application
         android:label="Active Life"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher.png">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
