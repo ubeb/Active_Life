@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.coba.app-mergeDebugResources-16:/values-hr/values-hr.xml",
+            "outputFile": "com.example.coba.app-mergeDebugResources-21:/values-hr/values-hr.xml",
             "map": [
                 {
                     "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\aba8f806953ea3dd8f794da3aeb78a12\\transformed\\jetified-play-services-base-18.0.1\\res\\values-hr\\values.xml",
@@ -55,7 +55,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\7e9df2ac2213a6bd3cef0f2f27870d79\\transformed\\core-1.6.0\\res\\values-hr\\values-hr.xml",
+                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\c2aff38445ebad8ddeaa989ecf50f56e\\transformed\\core-1.9.0\\res\\values-hr\\values-hr.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

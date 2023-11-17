@@ -7,6 +7,8 @@ class ExerciseTile extends StatefulWidget {
   final String sets;
   final bool isCompleted;
   final void Function(bool) onCheckboxChanged;
+  final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   ExerciseTile({
     Key? key,
@@ -16,6 +18,8 @@ class ExerciseTile extends StatefulWidget {
     required this.sets,
     required this.isCompleted,
     required this.onCheckboxChanged,
+    required this.onDelete,
+    required this.onEdit,
   }) : super(key: key);
 
   @override
@@ -30,7 +34,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
       child: ListTile(
         title: Text(
           widget.exerciseName,
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
         ),
         subtitle: Row(
           children: [
@@ -51,14 +55,44 @@ class _ExerciseTileState extends State<ExerciseTile> {
             ),
           ],
         ),
-        trailing: Checkbox(
-          value: widget.isCompleted,
-          onChanged: (bool? value) {
-            // Use null-aware operator to handle null value
-            if (value != null) {
-              widget.onCheckboxChanged(value);
-            }
-          },
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Checkbox(
+              value: widget.isCompleted,
+              onChanged: (bool? value) {
+                // Use null-aware operator to handle null value
+                if (value != null) {
+                  widget.onCheckboxChanged(value);
+                }
+              },
+            ),
+            PopupMenuButton<String>(
+              onSelected: (String result) {
+                if (result == 'edit') {
+                  widget.onEdit();
+                } else if (result == 'delete') {
+                  widget.onDelete();
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'edit',
+                  child: ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Edit'),
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text('Delete'),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -7,8 +7,8 @@ class FirebaseApi {
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final FCMToken = await _firebaseMessaging.getToken();
-    print('print: $FCMToken');
-    initNotifications();
+    print('Token: $FCMToken');
+    initPushNotifications();
   }
 
   void handleMessage(RemoteMessage? message) {
@@ -16,8 +16,8 @@ class FirebaseApi {
     navigatorKey.currentState?.pushNamed('/notifpage', arguments: message);
   }
 
-  Future initPushNotifications() async {
-    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
+  Future<void> initPushNotifications() async {
+    await FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
 }

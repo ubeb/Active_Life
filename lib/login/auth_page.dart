@@ -17,11 +17,13 @@ class _authpageState extends State<authpage> {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.data != null && snapshot.data!.uid.isNotEmpty) {
+            // User is authenticated
             return Tabs(
-              userData: {},
+              userData: {}, // You might want to fetch user data here
             );
           } else {
+            // User is not authenticated
             return LoginPage();
           }
         },

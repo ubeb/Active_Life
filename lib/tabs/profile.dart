@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coba/models/getUserName.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,17 +10,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final user = FirebaseAuth.instance.currentUser!;
-
-  List<String> docIDs = [];
-
-  Future getDocID() async {
-    await FirebaseFirestore.instance.collection('users').get().then(
-          (snapshot) => snapshot.docs.forEach((document) {
-            print(document.reference);
-            docIDs.add(document.reference.id);
-          }),
-        );
-  }
+  final userName = FirebaseFirestore.instance.collection('users').snapshots();
 
   void logout(BuildContext context) {
     showDialog(
@@ -48,6 +39,31 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Widget buildProfilePicture(String name) {
+    String initials = '';
+    if (name.isNotEmpty) {
+      List<String> nameSplit = name.split(' ');
+      if (nameSplit.length > 0) {
+        initials += nameSplit[0][0];
+        if (nameSplit.length > 1) {
+          initials += nameSplit[1][0];
+        }
+      }
+    }
+
+    return CircleAvatar(
+      radius: 60,
+      backgroundColor: Colors.blue, // You can set the background color
+      child: Text(
+        initials,
+        style: TextStyle(
+          fontSize: 50,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,47 +76,54 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+        body: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: AssetImage('assets/images/image009.jpg'),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                alignment: AlignmentDirectional.centerStart,
+                child: StreamBuilder(
+                  stream: userName,
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Loading...");
+                    }
+                    var docs = snapshot.data!.docs;
+                    if (docs.isNotEmpty) {
+                      // Assuming 'name' is the field in Firestore containing the user's name
+                      String userName = docs.first['name'];
+                      return buildProfilePicture(userName);
+                    } else {
+                      return const Text("No user data found");
+                    }
+                  }),
                 ),
               ),
-              SizedBox(height: 20),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Name'),
-                subtitle: Text('No Name'),
-              ),
-              ListTile(
-                leading: Icon(Icons.cake),
-                title: Text('Age'),
-                subtitle: Text('Age not available'),
-              ),
-              ListTile(
-                leading: Icon(Icons.fitness_center),
-                title: Text('Weight'),
-                subtitle: Text('Weight not available'),
-              ),
-              ListTile(
-                leading: Icon(Icons.height),
-                title: Text('Height'),
-                subtitle: Text('Height not available'),
-              ),
-              SizedBox(height: 20),
-              Divider(),
-              SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/editProfile');
-                  },
-                  child: Text('Edit Profile'),
+              Expanded(
+                child: StreamBuilder(
+                  stream: userName,
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Loading...");
+                    }
+                    var docs = snapshot.data!.docs;
+                    return ListView.builder(
+                      itemCount: docs.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Icon(Icons.person),
+                          title: Text(docs[index]['name']),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
             ],

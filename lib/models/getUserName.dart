@@ -19,10 +19,6 @@ class GetuserName extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text('Name: ${data['name']}'),
-              // Text('Age: ${data['age']}'),
-              // Text('Weight: ${data['weight']}'),
-              // Text('Height: ${data['height']}'),
               ListTile(
                 leading: Icon(Icons.person),
                 title: Text('Name'),

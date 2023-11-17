@@ -1,6 +1,8 @@
+import 'package:coba/tabs/Homepage.dart';
 import 'package:coba/tabs/crud.dart';
 import 'package:coba/tabs/fcm.dart';
 import 'package:coba/tabs/profile.dart';
+import 'package:coba/tabs/testpage.dart';
 import 'package:flutter/material.dart';
 
 class Tabs extends StatefulWidget {
@@ -12,6 +14,17 @@ class Tabs extends StatefulWidget {
   _TabsState createState() => _TabsState();
 }
 
+class TabControllerProvider with ChangeNotifier {
+  int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
+
+  void changeTab(int newIndex) {
+    _currentIndex = newIndex;
+    notifyListeners();
+  }
+}
+
 class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -19,9 +32,13 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 3,
+      length: 4,
       vsync: this,
     );
+  }
+
+  void changeTab(int index) {
+    _tabController.animateTo(index);
   }
 
   @override
@@ -36,11 +53,7 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: TabBarView(
         controller: _tabController,
-        children: <Widget>[
-          fcm(),
-          crud(),
-          Profile(),
-        ],
+        children: <Widget>[homepage(), crud(), fcm(), Profile()],
       ),
       bottomNavigationBar: TabBar(
         controller: _tabController,
@@ -50,6 +63,9 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
           ),
           Tab(
             icon: Icon(Icons.fitness_center, size: 26.0),
+          ),
+          Tab(
+            icon: Icon(Icons.notifications, size: 26.0),
           ),
           Tab(
             icon: Icon(Icons.account_circle_outlined, size: 26.0),

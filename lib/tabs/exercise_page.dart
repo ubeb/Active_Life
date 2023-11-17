@@ -167,6 +167,116 @@ class _ExercisePageState extends State<ExercisePage> {
     setsController.clear();
   }
 
+  void deleteExercise(String exerciseId) async {
+    await FirebaseFirestore.instance
+        .collection('workouts')
+        .doc(widget.workoutDocumentId)
+        .collection('exercises')
+        .doc(exerciseId)
+        .delete();
+
+    // Refresh the UI
+    setState(() {});
+  }
+
+  void editExercise(String exerciseId, String initialExerciseName,
+      String initialWeight, String initialReps, String initialSets) {
+    // Set initial values for editing
+    exerciseNameController.text = initialExerciseName;
+    weightController.text = initialWeight;
+    repsController.text = initialReps;
+    setsController.text = initialSets;
+
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Edit exercise'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //name
+                  TextField(
+                    controller: exerciseNameController,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 128, 128, 128),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Exercise Name",
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                  ),
+                  //weight
+                  TextField(
+                    controller: weightController,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 128, 128, 128),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Weight",
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                  ),
+                  //reps
+                  TextField(
+                    controller: repsController,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 128, 128, 128),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Reps",
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                  ),
+                  //sets
+                  TextField(
+                    controller: setsController,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 128, 128, 128),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Sets",
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                  )
+                ],
+              ),
+              actions: [
+                //cancel
+                MaterialButton(onPressed: cancel, child: Text('Cancel')),
+                //save
+                MaterialButton(
+                    onPressed: () => updateExercise(exerciseId),
+                    child: Text('Save')),
+              ],
+            ));
+  }
+
+  void updateExercise(String exerciseId) async {
+    String updatedExerciseName = exerciseNameController.text;
+    String updatedWeight = weightController.text;
+    String updatedReps = repsController.text;
+    String updatedSets = setsController.text;
+
+    await FirebaseFirestore.instance
+        .collection('workouts')
+        .doc(widget.workoutDocumentId)
+        .collection('exercises')
+        .doc(exerciseId)
+        .update({
+      'exerciseName': updatedExerciseName,
+      'weight': updatedWeight,
+      'sets': updatedSets,
+      'reps': updatedReps,
+    });
+
+    Navigator.pop(context); // Close the dialog
+    clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WorkoutData>(
@@ -202,6 +312,18 @@ class _ExercisePageState extends State<ExercisePage> {
                   isCompleted: exerciseData['isCompleted'] ?? false,
                   onCheckboxChanged: (val) {
                     onCheckBoxChanged(exercises[index].id, val);
+                  },
+                  onDelete: () {
+                    // Call the delete method with the exercise ID
+                    deleteExercise(exercises[index].id);
+                  },
+                  onEdit: () {
+                    editExercise(
+                        exercises[index].id,
+                        exerciseData['exerciseName'],
+                        exerciseData['weight'],
+                        exerciseData['reps'],
+                        exerciseData['sets']);
                   },
                 );
               },

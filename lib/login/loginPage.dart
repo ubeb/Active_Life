@@ -155,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: <Widget>[
                           TextField(
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
                                 color: Color.fromARGB(255, 128, 128, 128)),
                             decoration: InputDecoration(

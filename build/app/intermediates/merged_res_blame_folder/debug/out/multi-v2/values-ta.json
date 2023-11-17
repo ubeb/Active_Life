@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.coba.app-mergeDebugResources-16:/values-ta/values-ta.xml",
+            "outputFile": "com.example.coba.app-mergeDebugResources-21:/values-ta/values-ta.xml",
             "map": [
-                {
-                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\7e9df2ac2213a6bd3cef0f2f27870d79\\transformed\\core-1.6.0\\res\\values-ta\\values-ta.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "24",
-                        "startColumns": "4",
-                        "startOffsets": "2721",
-                        "endColumns": "100",
-                        "endOffsets": "2817"
-                    }
-                },
                 {
                     "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\6d3bbaf4594b8ed85e4722883be764b3\\transformed\\browser-1.4.0\\res\\values-ta\\values-ta.xml",
                     "from": {
@@ -69,6 +52,23 @@
                         "startOffsets": "1039",
                         "endColumns": "160",
                         "endOffsets": "1195"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\c2aff38445ebad8ddeaa989ecf50f56e\\transformed\\core-1.9.0\\res\\values-ta\\values-ta.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "24",
+                        "startColumns": "4",
+                        "startOffsets": "2721",
+                        "endColumns": "100",
+                        "endOffsets": "2817"
                     }
                 }
             ]

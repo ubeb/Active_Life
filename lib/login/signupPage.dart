@@ -35,16 +35,18 @@ class _SignupPageState extends State<SignupPage> {
     }
     try {
       if (passwordConfirmed()) {
-        // await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        //     email: emailController.text, password: passwordController.text);
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text);
         // Add user detail only if the password is confirmed
+        String uid = userCredential.user!.uid;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => DataPage(
               name: nameController.text,
               email: emailController.text,
-              uid: FirebaseAuth.instance.currentUser!.uid,
+              uid: uid,
             ),
           ),
         );
@@ -66,17 +68,6 @@ class _SignupPageState extends State<SignupPage> {
         showErrorMessage(context, "An error occurred: ${e.message}");
       }
     }
-  }
-
-// ... (rest of the code remains unchanged)
-
-  //add user detail
-  Future addUserDeatail(String firstName, String email) async {
-    await FirebaseFirestore.instance.collection("users").add({
-      'name': firstName,
-      'email': email,
-      'uid': FirebaseAuth.instance.currentUser!.uid,
-    });
   }
 
   bool passwordConfirmed() {

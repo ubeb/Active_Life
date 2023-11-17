@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,6 @@ class crud extends StatefulWidget {
 }
 
 class _crudState extends State<crud> {
-  final user = FirebaseAuth.instance.currentUser!;
   final newWorkoutNameController = TextEditingController();
 
   void createNewWorkout() {
@@ -90,11 +88,13 @@ class _crudState extends State<crud> {
           ),
           MaterialButton(
             onPressed: () async {
-              String workoutName = snapshot.data!.docs[index]['name'];
-              // Delete the workout document from Firestore
+              // Use the actual document ID obtained from the snapshot
+              String workoutDocumentId = snapshot.data!.docs[index].id;
+
+              // Delete the workout document from Firestore using the correct document ID
               await FirebaseFirestore.instance
                   .collection('workouts')
-                  .doc(workoutName)
+                  .doc(workoutDocumentId)
                   .delete();
 
               // Notify the WorkoutData provider to update the local state

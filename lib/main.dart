@@ -1,6 +1,7 @@
 import 'package:coba/firebase_api.dart';
 import 'package:coba/models/workout_data.dart';
 import 'package:coba/splash.dart';
+import 'package:coba/tabs/crud.dart';
 import 'package:coba/tabs/editProfile.dart';
 import 'package:coba/tabs/fcm.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
+        navigatorKey: navigatorKey,
         routes: {
           '/editProfile': (context) => ProfileEditPage(
                 name: 'John Doe',
@@ -34,7 +36,8 @@ class MyApp extends StatelessWidget {
                 weight: '75',
                 height: '180',
               ),
-          '/notifpage': (context) => fcm()
+          '/notifpage': (context) => fcm(),
+          '/workout': (context) => crud(),
         },
         theme: ThemeData(fontFamily: 'Geometria'),
         home: Scaffold(
