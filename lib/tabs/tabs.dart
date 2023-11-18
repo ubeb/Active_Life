@@ -3,6 +3,7 @@ import 'package:coba/tabs/fcm.dart';
 import 'package:coba/tabs/profile.dart';
 import 'package:coba/tabs/workout.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Tabs extends StatefulWidget {
   final Map<String, String> userData;
@@ -48,40 +49,38 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          homepage(),
-          workout(
-            workouts: [],
-          ),
-          fcm(),
-          profile()
-        ],
-      ),
-      bottomNavigationBar: TabBar(
-        controller: _tabController,
-        tabs: <Widget>[
-          Tab(
-            icon: Icon(Icons.explicit, size: 26.0),
-          ),
-          Tab(
-            icon: Icon(Icons.fitness_center, size: 26.0),
-          ),
-          Tab(
-            icon: Icon(Icons.notifications, size: 26.0),
-          ),
-          Tab(
-            icon: Icon(Icons.account_circle_outlined, size: 26.0),
-          ),
-        ],
-        labelPadding: EdgeInsets.all(5.0),
-        labelColor: Colors.blue,
-        unselectedLabelColor: Colors.black12,
-        indicatorWeight: 0.01,
-        isScrollable: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TabControllerProvider()),
+      ],
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[homepage(), Workout(), fcm(), profile()],
+        ),
+        bottomNavigationBar: TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(Icons.explicit, size: 26.0),
+            ),
+            Tab(
+              icon: Icon(Icons.fitness_center, size: 26.0),
+            ),
+            Tab(
+              icon: Icon(Icons.notifications, size: 26.0),
+            ),
+            Tab(
+              icon: Icon(Icons.account_circle_outlined, size: 26.0),
+            ),
+          ],
+          labelPadding: EdgeInsets.all(5.0),
+          labelColor: Colors.blue,
+          unselectedLabelColor: Colors.black12,
+          indicatorWeight: 0.01,
+          isScrollable: false,
+        ),
       ),
     );
   }

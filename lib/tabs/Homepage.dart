@@ -11,10 +11,6 @@ class homepage extends StatefulWidget {
 
 class _homepageState extends State<homepage> {
   final user = FirebaseAuth.instance.currentUser!;
-  final recomWork =
-      FirebaseFirestore.instance.collection('recomWork').snapshots();
-  final appWork = FirebaseFirestore.instance.collection('appWork').snapshots();
-
   List<String> docId = [];
 
   Future getDocIdRecom() async {
@@ -39,8 +35,10 @@ class _homepageState extends State<homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TabControllerProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TabControllerProvider()),
+      ],
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -114,7 +112,9 @@ class _homepageState extends State<homepage> {
                     ElevatedButton(
                       onPressed: () {
                         // Add your logic for starting a workout here
-                        print('Start a workout button pressed!');
+                        Provider.of<TabControllerProvider>(context,
+                                listen: false)
+                            .changeTab(1); // Switch to the "workout" tab
                       },
                       child: Text('Start a Workout'),
                     ),
@@ -137,12 +137,12 @@ class _homepageState extends State<homepage> {
                     // Horizontal ListView for recommended workout programs
                     Container(
                       height: 220,
-                      width: 300,
-                      alignment: FractionalOffset.topCenter,
                       child: StreamBuilder(
                         stream: FirebaseFirestore.instance
-                            .collection('recomWork')
-                            .orderBy('createdAt', descending: true)
+                            .collection('workoutCollection')
+                            .doc('recommendedWorkouts')
+                            .collection('Beginner')
+                            .doc('workout')
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -152,53 +152,54 @@ class _homepageState extends State<homepage> {
                               ConnectionState.waiting) {
                             return Text("Loading...");
                           }
-                          var docs = snapshot.data!.docs;
-                          if (docs.isNotEmpty) {
-                            return ListView.builder(
-                              itemCount: docs.length,
-                              itemBuilder: ((context, index) {
-                                return Column(
-                                  children: [
-                                    Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              docs[index]['name'],
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.black,
-                                              ),
-                                              onPressed: () => (),
-                                            ),
-                                          ],
+                          var doc = snapshot.data
+                              as DocumentSnapshot<Map<String, dynamic>>;
+                          if (doc.exists) {
+                            // The document exists, you can access its data
+                            var workoutData = doc.data();
+                            var exercises =
+                                workoutData?['exercises'] as List<dynamic>;
+                            return ListView(
+                              padding: EdgeInsets.zero,
+                              scrollDirection: Axis.vertical,
+                              children: exercises.map((exercise) {
+                                return Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: ListTile(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          exercise['name'] ?? 'Exercise Name',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () => (),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 );
-                              }),
+                              }).toList(),
                             );
                           } else {
-                            return const Text(
-                                "No recommended workouts available");
+                            // Document does not exist
+                            return Text("No recommended workouts available");
                           }
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -215,13 +216,13 @@ class _homepageState extends State<homepage> {
                     ),
                     SizedBox(height: 8),
                     Container(
-                      height: 200,
-                      width: 300,
-                      alignment: FractionalOffset.topCenter,
+                      height: 220,
                       child: StreamBuilder(
                         stream: FirebaseFirestore.instance
-                            .collection('appWork')
-                            .orderBy('createdAt', descending: true)
+                            .collection('workoutCollection')
+                            .doc('defaultWorkouts')
+                            .collection('Beginner')
+                            .doc('workout')
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -231,53 +232,55 @@ class _homepageState extends State<homepage> {
                               ConnectionState.waiting) {
                             return Text("Loading...");
                           }
-                          var docs = snapshot.data!.docs;
-                          if (docs.isNotEmpty) {
-                            return ListView.builder(
-                              itemCount: docs.length,
-                              itemBuilder: ((context, index) {
-                                return Column(
-                                  children: [
-                                    Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: ListTile(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              docs[index]['name'],
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.black,
-                                              ),
-                                              onPressed: () => (),
-                                            ),
-                                          ],
+                          var doc = snapshot.data
+                              as DocumentSnapshot<Map<String, dynamic>>;
+                          if (doc.exists) {
+                            // The document exists, you can access its data
+                            var workoutData = doc.data();
+                            var exercises =
+                                workoutData?['exercises'] as List<dynamic>;
+                            return ListView(
+                              padding: EdgeInsets.zero,
+                              scrollDirection: Axis.vertical,
+                              children: exercises.map((exercise) {
+                                return Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: ListTile(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          exercise['name'] ?? 'Exercise Name',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () => (),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 );
-                              }),
+                              }).toList(),
                             );
                           } else {
-                            return const Text(
-                                "No recommended workouts available");
+                            // Document does not exist
+                            return Text("No provided workouts available");
                           }
                         },
                       ),
-                    )
+                    ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),

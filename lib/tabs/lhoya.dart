@@ -112,13 +112,180 @@ void addWorkoutCollection() async {
       },
     ],
   );
-
+//avbdhtcgniwabeonchmrctfudsggdasjdghghfkyugakjhasjchbkueficugnywwocriuwueunoencwqoiemcnqowyicnqwoeimncrwfxnxqeimpocnfrx
   // Default Workouts
-  await addDifficultyLevel(firestore, 'defaultWorkouts', 'Beginner', []);
+  await addDifficultyLevel(
+    firestore,
+    'defaultWorkouts',
+    'Beginner',
+    [
+      {
+        'name': 'Bodyweight Squats',
+        'weight': 'Body Weight',
+        'reps': 15,
+        'sets': 3,
+        'duration': null,
+      },
+      {
+        'name': 'Push-ups',
+        'weight': 'Body Weight',
+        'reps': 12,
+        'sets': 3,
+        'duration': null,
+      },
+      {
+        'name': 'Walking Lunges',
+        'weight': 'Body Weight',
+        'reps': 10,
+        'sets': 3,
+        'duration': null,
+      },
+      {
+        'name': 'Plank',
+        'weight': 'Body Weight',
+        'reps': null,
+        'sets': 3,
+        'duration': 30,
+      },
+      {
+        'name': 'Modified Push-ups',
+        'weight': 'Body Weight',
+        'reps': 12,
+        'sets': 3,
+        'duration': null,
+      },
+      {
+        'name': 'Chair Squats',
+        'weight': 'Body Weight',
+        'reps': 15,
+        'sets': 3,
+        'duration': null,
+      },
+      {
+        'name': 'Knee Plank',
+        'weight': 'Body Weight',
+        'reps': null,
+        'sets': 3,
+        'duration': 30,
+      },
+      // Add more exercises as needed
+    ],
+  );
 
-  await addDifficultyLevel(firestore, 'defaultWorkouts', 'Intermediate', []);
+  await addDifficultyLevel(
+    firestore,
+    'defaultWorkouts',
+    'Intermediate',
+    [
+      {
+        'name': 'Goblet Squats',
+        'weight': '20 lbs (dumbbell)',
+        'reps': 12,
+        'sets': 4,
+        'duration': null,
+      },
+      {
+        'name': 'Push-ups (Diamond)',
+        'weight': 'Body Weight',
+        'reps': 15,
+        'sets': 4,
+        'duration': null,
+      },
+      {
+        'name': 'Bulgarian Split Squats',
+        'weight': 'Body Weight',
+        'reps': 10,
+        'sets': 4,
+        'duration': null,
+      },
+      {
+        'name': 'Plank to Shoulder Tap',
+        'weight': 'Body Weight',
+        'reps': null,
+        'sets': 4,
+        'duration': 45,
+      },
+      {
+        'name': 'Dumbbell Bench Press',
+        'weight': '25 lbs (each dumbbell)',
+        'reps': 10,
+        'sets': 4,
+        'duration': null,
+      },
+      {
+        'name': 'Dumbbell Rows',
+        'weight': '20 lbs (each dumbbell)',
+        'reps': 12,
+        'sets': 4,
+        'duration': null,
+      },
+      {
+        'name': 'Jump Squats',
+        'weight': 'Body Weight',
+        'reps': 10,
+        'sets': 4,
+        'duration': null,
+      },
+      // Add more exercises as needed
+    ],
+  );
 
-  await addDifficultyLevel(firestore, 'defaultWorkouts', 'Advanced', []);
+  await addDifficultyLevel(
+    firestore,
+    'defaultWorkouts',
+    'Advanced',
+    [
+      {
+        'name': 'Barbell Squats',
+        'weight': '135 lbs',
+        'reps': 8,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Overhead Press',
+        'weight': '95 lbs (barbell)',
+        'reps': 6,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Weighted Pull-ups',
+        'weight': '20 lbs (weight belt)',
+        'reps': 8,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Barbell Lunges',
+        'weight': '95 lbs',
+        'reps': 10,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Deadlifts',
+        'weight': '185 lbs',
+        'reps': 8,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Pull-ups',
+        'weight': 'Body Weight',
+        'reps': 10,
+        'sets': 5,
+        'duration': null,
+      },
+      {
+        'name': 'Barbell Lunges',
+        'weight': '115 lbs',
+        'reps': 12,
+        'sets': 5,
+        'duration': null,
+      },
+    ],
+  );
 }
 
 Future<void> addDifficultyLevel(FirebaseFirestore firestore, String category,

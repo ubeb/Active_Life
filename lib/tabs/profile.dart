@@ -44,7 +44,7 @@ class _profileState extends State<profile> {
     );
   }
 
-  Widget buildprofilePicture(String name) {
+  Widget buildprofilePicture(String name, String gender) {
     String initials = '';
     if (name.isNotEmpty) {
       List<String> nameSplit = name.split(' ');
@@ -56,9 +56,15 @@ class _profileState extends State<profile> {
       }
     }
 
+    // Set background color based on gender
+    Color backgroundColor = Colors.blue; // Default to blue
+    if (gender.toLowerCase() == 'Perempuan') {
+      backgroundColor = Colors.pink;
+    }
+
     return CircleAvatar(
       radius: 40,
-      backgroundColor: Colors.blue,
+      backgroundColor: backgroundColor,
       child: Text(
         initials,
         style: TextStyle(
@@ -70,7 +76,7 @@ class _profileState extends State<profile> {
   }
 
   void fetchUserData() async {
-    // Assuming 'users' is the collection name and 'name' and 'email' are fields in your document
+    // Assuming 'users' is the collection name and 'name', 'email', and 'gender' are fields in your document
     final userDoc = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -80,6 +86,9 @@ class _profileState extends State<profile> {
       setState(() {
         userNameE = userDoc['name'];
         userEmail = userDoc['email'];
+        String userGender = userDoc[
+            'gender']; // Assuming 'gender' is the field representing the user's gender
+        buildprofilePicture(userNameE, userGender);
       });
     } else {
       print('User document does not exist');
@@ -113,7 +122,7 @@ class _profileState extends State<profile> {
                       var docs = snapshot.data!.docs;
                       if (docs.isNotEmpty) {
                         String userNameE = docs.first['name'];
-                        return buildprofilePicture(userNameE);
+                        return buildprofilePicture(userNameE, 'Perempuan');
                       } else {
                         return const Text("No user data found");
                       }
