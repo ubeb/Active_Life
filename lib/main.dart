@@ -31,10 +31,8 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         routes: {
           '/editProfile': (context) => ProfileEditPage(
-                name: 'John Doe',
-                age: '28',
-                weight: '75',
-                height: '180',
+                name: '',
+                email: '',
               ),
           '/notifpage': (context) => fcm(),
           '/workout': (context) => crud(),

@@ -1,7 +1,7 @@
 import 'package:coba/tabs/Homepage.dart';
-import 'package:coba/tabs/crud.dart';
 import 'package:coba/tabs/fcm.dart';
-import 'package:coba/tabs/lhoya.dart';
+import 'package:coba/tabs/profile.dart';
+import 'package:coba/tabs/workout.dart';
 import 'package:flutter/material.dart';
 
 class Tabs extends StatefulWidget {
@@ -52,7 +52,14 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: TabBarView(
         controller: _tabController,
-        children: <Widget>[homepage(), crud(), fcm(), lhoya()],
+        children: <Widget>[
+          homepage(),
+          workout(
+            workouts: [],
+          ),
+          fcm(),
+          profile()
+        ],
       ),
       bottomNavigationBar: TabBar(
         controller: _tabController,
