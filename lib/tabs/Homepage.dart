@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coba/models/defaultexercise.dart';
 import 'package:coba/tabs/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +15,6 @@ class homepage extends StatefulWidget {
 class _homepageState extends State<homepage> {
   final user = FirebaseAuth.instance.currentUser!;
   List<String> docId = [];
-
-  Future getDocIdRecom() async {
-    await FirebaseFirestore.instance
-        .collection('recomWork')
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((document) {
-              print(document.reference);
-              docId.add(document.reference.id);
-            }));
-  }
-
-  Future getDocIdApp() async {
-    await FirebaseFirestore.instance
-        .collection('appWork')
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((document) {
-              print(document.reference);
-              docId.add(document.reference.id);
-            }));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +45,10 @@ class _homepageState extends State<homepage> {
                             builder: (context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (snapshot.hasError) {
-                                return Text('Something went wrong');
+                                return Text(
+                                  'Something went wrong',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -105,7 +91,10 @@ class _homepageState extends State<homepage> {
                                   ],
                                 );
                               } else {
-                                return Text('No data found2');
+                                return Text(
+                                  'No data found2',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               }
                             },
                           ),
@@ -175,29 +164,36 @@ class _homepageState extends State<homepage> {
                         child: StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection('workoutCollection')
-                              .doc('recommendedWorkouts')
+                              .doc('defaultWorkouts')
                               .collection('Beginner')
                               .doc('workout')
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
-                              return const Text('Something went wrong');
+                              return const CircularProgressIndicator();
                             }
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Text("Loading...");
                             }
                             var doc = snapshot.data
                                 as DocumentSnapshot<Map<String, dynamic>>;
                             if (doc.exists) {
-                              // The document exists, you can access its data
                               var workoutData = doc.data();
                               var exercises =
                                   workoutData?['exercises'] as List<dynamic>;
                               return ListView(
                                 padding: EdgeInsets.zero,
+                                shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 children: exercises.map((exercise) {
+                                  ExerciseDetails details = ExerciseDetails(
+                                    name: exercise['name'] ?? 'Exercise Name',
+                                    weight: exercise['weight'] ?? '',
+                                    reps: exercise['reps'] ?? 0,
+                                    sets: exercise['sets'] ?? 0,
+                                    duration: exercise['duration'] ?? 0,
+                                  );
                                   return Card(
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
@@ -209,8 +205,8 @@ class _homepageState extends State<homepage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            exercise['name'] ?? 'Exercise Name',
-                                            style: TextStyle(
+                                            details.name,
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -229,8 +225,10 @@ class _homepageState extends State<homepage> {
                                 }).toList(),
                               );
                             } else {
-                              // Document does not exist
-                              return Text("No recommended workouts available");
+                              return const Text(
+                                "No workouts available",
+                                style: TextStyle(color: Colors.white),
+                              );
                             }
                           },
                         ),

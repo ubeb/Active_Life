@@ -213,7 +213,13 @@ class _ExercisePageState extends State<ExercisePage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Edit exercise'),
+              backgroundColor: Color.fromARGB(255, 28, 28, 30),
+              title: Text(
+                'Edit exercise',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 208, 253, 62),
+                ),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -221,7 +227,7 @@ class _ExercisePageState extends State<ExercisePage> {
                   TextField(
                     controller: exerciseNameController,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 128, 128, 128),
+                      color: Colors.grey[200],
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -233,47 +239,57 @@ class _ExercisePageState extends State<ExercisePage> {
                   TextField(
                     controller: weightController,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 128, 128, 128),
+                      color: Colors.grey[200],
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Weight",
-                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      hintStyle: TextStyle(color: Colors.grey[200]),
                     ),
                   ),
                   //reps
                   TextField(
                     controller: repsController,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 128, 128, 128),
+                      color: Colors.grey[200],
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Reps",
-                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      hintStyle: TextStyle(color: Colors.grey[200]),
                     ),
                   ),
                   //sets
                   TextField(
                     controller: setsController,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 128, 128, 128),
+                      color: Colors.grey[200],
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Sets",
-                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      hintStyle: TextStyle(color: Colors.grey[200]),
                     ),
                   )
                 ],
               ),
               actions: [
                 //cancel
-                MaterialButton(onPressed: cancel, child: Text('Cancel')),
+                MaterialButton(
+                    onPressed: cancel,
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    )),
                 //save
                 MaterialButton(
                     onPressed: () => updateExercise(exerciseId),
-                    child: Text('Save')),
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 208, 253, 62),
+                      ),
+                    )),
               ],
             ));
   }

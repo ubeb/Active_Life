@@ -1,4 +1,4 @@
-#Mon Nov 20 08:04:20 ICT 2023
+#Tue Nov 21 03:24:50 ICT 2023
 base.2=E\:\\\!\!\!\! kelulusan kls 12\\fittness\\coba\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.2=classes3.dex
 base.1=E\:\\\!\!\!\! kelulusan kls 12\\fittness\\coba\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex

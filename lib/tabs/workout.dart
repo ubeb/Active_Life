@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coba/models/defaultexercise.dart';
 import 'package:coba/tabs/crud.dart';
 import 'package:coba/tabs/exerciseDefault.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class Workout extends StatefulWidget {
   const Workout({Key? key}) : super(key: key);
@@ -17,16 +17,20 @@ class _WorkoutState extends State<Workout> {
   final appWork =
       FirebaseFirestore.instance.collection('workoutCollection').snapshots();
   List<String> docId = [];
-  // void goToExercisePage(String workoutName, String workoutDocumentId) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => myexercise(
-  //         workoutDocumentId: workoutDocumentId,
-  //       ),
-  //     ),
-  //   );
-  // }
+
+  void _goToExerciseDetails(String workoutDifficulty, List<dynamic> exercises,
+      int selectedExerciseIndex) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => myexercise(
+          workoutDifficulty: workoutDifficulty,
+          workoutExercises: exercises,
+          selectedExerciseIndex: selectedExerciseIndex,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +44,13 @@ class _WorkoutState extends State<Workout> {
           title: const Text(
             'Workout Plans',
             style: TextStyle(
-                color: Color.fromARGB(
-              255,
-              208,
-              253,
-              62,
-            )),
+              color: Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              ),
+            ),
           ),
           centerTitle: true,
           bottom: const TabBar(
@@ -88,74 +93,93 @@ class _WorkoutState extends State<Workout> {
             SizedBox(
               height: 8,
             ),
-            Container(
-              height: 260,
-              color: Color.fromARGB(255, 28, 28, 30),
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('workoutCollection')
-                    .doc('defaultWorkouts')
-                    .collection(difficulty)
-                    .doc('workout')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading...");
-                  }
-                  var doc =
-                      snapshot.data as DocumentSnapshot<Map<String, dynamic>>;
-                  if (doc.exists) {
-                    var workoutData = doc.data();
-                    var exercises = workoutData?['exercises'] as List<dynamic>;
-                    return ListView(
-                      scrollDirection: Axis.vertical,
-                      children: exercises.map((exercise) {
-                        ExerciseDetails details = ExerciseDetails(
-                          name: exercise['name'] ?? 'Exercise Name',
-                          weight: exercise['weight'] ?? '',
-                          reps: exercise['reps'] ?? 0,
-                          sets: exercise['sets'] ?? 0,
-                          duration: exercise['duration'] ?? 0,
-                        );
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => myexercise(
-                                  workoutDifficulty: '',
-                                  workoutId: '',
-                                  exerciseId: '',
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('workoutCollection')
+                  .doc('defaultWorkouts')
+                  .collection(difficulty)
+                  .doc('workout')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const CircularProgressIndicator();
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                var doc =
+                    snapshot.data as DocumentSnapshot<Map<String, dynamic>>;
+                if (doc.exists) {
+                  var workoutData = doc.data();
+                  var exercises = workoutData?['exercises'] as List<dynamic>;
+
+                  // Sort exercises by name
+                  exercises.sort(
+                      (a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
+
+                  return ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    children: exercises.asMap().entries.map((entry) {
+                      var index = entry.key;
+                      var exercise = entry.value;
+
+                      ExerciseDetails details = ExerciseDetails(
+                        name: exercise['name'] ?? 'Exercise Name',
+                        weight: exercise['weight'] ?? '',
+                        reps: exercise['reps'] ?? 0,
+                        sets: exercise['sets'] ?? 0,
+                        duration: exercise['duration'] ?? 0,
+                      );
+
+                      return GestureDetector(
+                        onTap: () {
+                          _goToExerciseDetails(
+                            difficulty,
+                            exercises,
+                            index,
+                          );
+                        },
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  details.name,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                details.name,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () => (),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                        );
-                      }).toList(),
-                    );
-                  } else {
-                    return const Text("No workouts available");
-                  }
-                },
-              ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                } else {
+                  return const Text(
+                    "No workouts available",
+                    style: TextStyle(color: Colors.white),
+                  );
+                }
+              },
             ),
           ],
         ),

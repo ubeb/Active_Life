@@ -14,9 +14,8 @@ class _fcmState extends State<fcm> {
   List<Map<String, String>> notifications = [];
   bool _mounted = false;
 
-  String _formatTimestamp(DateTime timestamp) {
-    final formattedDate =
-        DateFormat.Hm().format(timestamp); // Display only hours and minutes
+  String _formatTimestamp(Timestamp timestamp) {
+    final formattedDate = DateFormat.Hm().format(timestamp.toDate());
     return formattedDate;
   }
 
@@ -64,19 +63,34 @@ class _fcmState extends State<fcm> {
   }
 
   void deleteNotification(int index) async {
-    if (_mounted) {
+    if (_mounted && index >= 0 && index < notifications.length) {
       final documentId = notifications[index]['documentId'];
-      if (documentId != null && documentId.isNotEmpty) {
-        // Delete the notification from Firestore
-        await FirebaseFirestore.instance
-            .collection('notifications')
-            .doc(documentId)
-            .delete();
-      }
 
-      setState(() {
-        notifications.removeAt(index);
-      });
+      print(
+          'Deleting notification at index $index with documentId: $documentId');
+
+      if (documentId != null && documentId.isNotEmpty) {
+        try {
+          // Delete the notification from Firestore
+          await FirebaseFirestore.instance
+              .collection('notifications')
+              .doc(documentId)
+              .delete();
+
+          print('Notification deleted successfully from Firestore.');
+
+          // Update the UI to reflect the deletion
+          setState(() {
+            notifications.removeAt(index);
+          });
+
+          print('UI updated after notification deletion.');
+        } catch (e) {
+          print('Error deleting notification from Firestore: $e');
+        }
+      } else {
+        print('Invalid documentId for notification at index $index');
+      }
     }
   }
 
@@ -124,76 +138,103 @@ class _fcmState extends State<fcm> {
         title: Text(
           'Notifications',
           style: TextStyle(
-              color: Color.fromARGB(
-            255,
-            208,
-            253,
-            62,
-          )),
+            color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            ),
+          ),
         ),
         backgroundColor: const Color.fromARGB(255, 28, 28, 30),
         centerTitle: true,
       ),
-      body: notifications.isEmpty
-          ? Container(
-              color: Color.fromARGB(255, 28, 28, 30),
-              child: Center(
-                child: Text(
-                  'No notifications',
-                  style: TextStyle(color: Colors.white),
+      body: Container(
+        color: Color.fromARGB(255, 28, 28, 30),
+        child: FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance.collection('notifications').get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Container(
+                color: Color.fromARGB(255, 28, 28, 30),
+                child: Center(
+                  child: Text(
+                    'No notifications',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            )
-          : Container(
-              color: Color.fromARGB(255, 28, 28, 30),
-              child: ListView.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  final notification = notifications[index];
-                  return Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    margin: EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            notification['title'] ?? "No title",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 28, 28, 30)),
+              );
+            } else {
+              var notifications = snapshot.data!.docs;
+
+              return Container(
+                color: Color.fromARGB(255, 28, 28, 30),
+                child: ListView.builder(
+                  itemCount: notifications.length,
+                  itemBuilder: (context, index) {
+                    var notificationData =
+                        notifications[index].data() as Map<String, dynamic>;
+                    return Container(
+                      color: Color.fromARGB(255, 28, 28, 30),
+                      height: 90,
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        margin: EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                notificationData['title'] ?? "No title",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 28, 28, 30)),
+                              ),
+                              // Corrected line without the 'final' keyword
+                              Text(
+                                _formatTimestamp(
+                                    notificationData['timestamp'] as Timestamp),
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey[800]),
+                              ),
+                            ],
                           ),
-                          Text(
-                            _formatTimestamp(DateTime.parse(
-                                notification['timestamp'] ?? '')),
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[800]),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 6),
+                              Text(
+                                notificationData['body'] ?? "No body",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 28, 28, 30)),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 6),
-                          Text(
-                            notification['body'] ?? "No body",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 28, 28, 30)),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () => deleteNotification(index),
                           ),
-                        ],
+                        ),
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () => deleteNotification(index),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                    );
+                  },
+                ),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:coba/tabs/Homepage.dart';
 import 'package:coba/tabs/resetPassword.dart';
+import 'package:coba/tabs/tabs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './signupPage.dart';
@@ -78,7 +78,10 @@ class _LoginPageState extends State<LoginPage> {
       // If login is successful, navigate to the homepage
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => homepage()),
+        MaterialPageRoute(
+            builder: (context) => Tabs(
+                  userData: {},
+                )),
       );
     } on FirebaseAuthException catch (e) {
       // Handle specific authentication errors and show user-friendly messages
@@ -147,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           color: _pageLogin
                               ? Color.fromARGB(255, 28, 28, 30)
-                              : Colors.white,
+                              : Colors.grey[600],
                         ),
                       ),
                       onPressed: () {
@@ -212,27 +215,32 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => resetpass()),
-                              );
-                            },
-                            child: Text(
-                              "Forget Password?",
-                              style: TextStyle(
-                                color: Color.fromARGB(
-                                  255,
-                                  208,
-                                  253,
-                                  62,
+                          SizedBox(height: 15),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => resetpass()),
+                                );
+                              },
+                              child: Text(
+                                "Forget Password?",
+                                style: TextStyle(
+                                  color: Color.fromARGB(
+                                    255,
+                                    208,
+                                    253,
+                                    62,
+                                  ),
                                 ),
+                                textAlign: TextAlign.end,
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 15),
                           Container(
                             height: 50,
                             width: 100,

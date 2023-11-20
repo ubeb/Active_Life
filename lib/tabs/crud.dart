@@ -32,6 +32,7 @@ class _crudState extends State<crud> {
         ),
         content: TextField(
           controller: newWorkoutNameController,
+          style: TextStyle(color: Colors.grey[400]),
           decoration: InputDecoration(
             hintText: 'Workout Name',
             hintStyle: TextStyle(color: Colors.grey[400]),
@@ -269,6 +270,7 @@ class _crudState extends State<crud> {
                         children: [
                           Checkbox(
                             value: workouts[index]['isCompleted'],
+                            activeColor: Colors.green[700],
                             onChanged: (value) {
                               // Handle checkbox change if needed
                             },

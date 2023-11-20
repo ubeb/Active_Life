@@ -30,27 +30,34 @@ class _ExerciseTileState extends State<ExerciseTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[100],
+      color: Colors.grey[800],
       child: ListTile(
         title: Text(
           widget.exerciseName,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+          style: TextStyle(
+              fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white),
         ),
         subtitle: Row(
           children: [
             Chip(
+              backgroundColor: Colors.grey[600],
               label: Text(
                 "${widget.weight} kg",
+                style: TextStyle(color: Colors.grey[100]),
               ),
             ),
             Chip(
+              backgroundColor: Colors.grey[600],
               label: Text(
                 "${widget.reps} reps",
+                style: TextStyle(color: Colors.grey[100]),
               ),
             ),
             Chip(
+              backgroundColor: Colors.grey[600],
               label: Text(
                 "${widget.sets} sets",
+                style: TextStyle(color: Colors.grey[100]),
               ),
             ),
           ],
@@ -60,6 +67,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
           children: [
             Checkbox(
               value: widget.isCompleted,
+              activeColor: Colors.green,
               onChanged: (bool? value) {
                 // Use null-aware operator to handle null value
                 if (value != null) {
@@ -68,6 +76,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
               },
             ),
             PopupMenuButton<String>(
+              color: Colors.grey[100],
               onSelected: (String result) {
                 if (result == 'edit') {
                   widget.onEdit();

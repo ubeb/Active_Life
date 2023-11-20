@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,6 +56,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         print("Error updating profile: $e");
       }
     }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -133,6 +142,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        // background color
                         primary: Color.fromARGB(255, 208, 253, 62),
                         onPrimary: Color.fromARGB(255, 28, 28, 30),
                       ),
