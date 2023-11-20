@@ -14,11 +14,20 @@ class _SignupPageState extends State<SignupPage> {
   final confirmPasswordController = TextEditingController();
 
   bool _isHidden = true;
+  bool _isHidden2 = true;
 
   void _toggleVisibility() {
     setState(
       () {
         _isHidden = !_isHidden;
+      },
+    );
+  }
+
+  void _toggleVisibility2() {
+    setState(
+      () {
+        _isHidden2 = !_isHidden2;
       },
     );
   }
@@ -102,7 +111,7 @@ class _SignupPageState extends State<SignupPage> {
             child: Container(
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 28, 28, 30),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -120,8 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                       children: <Widget>[
                         TextField(
                           controller: nameController,
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 128, 128, 128)),
+                          style: TextStyle(color: Colors.grey[400]),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "First Name",
@@ -131,8 +139,7 @@ class _SignupPageState extends State<SignupPage> {
                         TextField(
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 128, 128, 128)),
+                          style: TextStyle(color: Colors.grey[400]),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Email address",
@@ -143,13 +150,15 @@ class _SignupPageState extends State<SignupPage> {
                           child: TextField(
                             controller: passwordController,
                             obscureText: _isHidden,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 128, 128, 128)),
+                            style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                icon: Icon(_isHidden
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
+                                icon: Icon(
+                                  _isHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.white,
+                                ),
                                 onPressed: _toggleVisibility,
                               ),
                               border: InputBorder.none,
@@ -164,14 +173,16 @@ class _SignupPageState extends State<SignupPage> {
                           child: TextField(
                             controller: confirmPasswordController,
                             obscureText: _isHidden,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 128, 128, 128)),
+                            style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                icon: Icon(_isHidden
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: _toggleVisibility,
+                                icon: Icon(
+                                  _isHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.white,
+                                ),
+                                onPressed: _toggleVisibility2,
                               ),
                               border: InputBorder.none,
                               hintText: "Confirm Password",
@@ -199,6 +210,12 @@ class _SignupPageState extends State<SignupPage> {
                 signUp(context);
               },
               style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(
+                  255,
+                  208,
+                  253,
+                  62,
+                ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)),
               ),
@@ -210,7 +227,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: Text(
                     "Next",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 28, 28, 30),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -54,7 +54,7 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         ChangeNotifierProvider(create: (_) => TabControllerProvider()),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 28, 28, 30),
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[homepage(), Workout(), fcm(), profile()],
@@ -76,8 +76,13 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
             ),
           ],
           labelPadding: EdgeInsets.all(5.0),
-          labelColor: Colors.blue,
-          unselectedLabelColor: Colors.black12,
+          labelColor: Color.fromARGB(
+            255,
+            208,
+            253,
+            62,
+          ),
+          unselectedLabelColor: Colors.grey[700],
           indicatorWeight: 0.01,
           isScrollable: false,
         ),

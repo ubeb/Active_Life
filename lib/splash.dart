@@ -22,9 +22,16 @@ class _splashState extends State<splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 28, 28, 30),
       body: Center(
-        child: Icon(Icons.fitness_center, size: 100.0, color: Colors.blue),
+        child: Icon(Icons.fitness_center,
+            size: 100.0,
+            color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            )),
       ),
     );
   }

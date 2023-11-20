@@ -19,13 +19,40 @@ class _crudState extends State<crud> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Create New Workout'),
+        backgroundColor: Color.fromARGB(255, 28, 28, 30),
+        title: Text(
+          'Create New Workout',
+          style: TextStyle(
+              color: Color.fromARGB(
+            255,
+            208,
+            253,
+            62,
+          )),
+        ),
         content: TextField(
           controller: newWorkoutNameController,
+          decoration: InputDecoration(
+            hintText: 'Workout Name',
+            hintStyle: TextStyle(color: Colors.grey[400]),
+          ),
         ),
         actions: [
-          MaterialButton(onPressed: cancel, child: Text('Cancel')),
-          MaterialButton(onPressed: save, child: Text('Save')),
+          MaterialButton(
+              onPressed: cancel,
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white),
+              )),
+          MaterialButton(
+            onPressed: save,
+            child: Text(
+              'Save',
+              style: TextStyle(
+                color: Color.fromARGB(255, 208, 253, 62),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -119,14 +146,27 @@ class _crudState extends State<crud> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Workout Name'),
+        backgroundColor: Color.fromARGB(255, 28, 28, 30),
+        title: Text(
+          'Edit Workout Name',
+          style: TextStyle(
+              color: Color.fromARGB(
+            255,
+            208,
+            253,
+            62,
+          )),
+        ),
         content: TextField(controller: editController),
         actions: [
           MaterialButton(
             onPressed: () {
               Navigator.pop(context); // Close the dialog
             },
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           MaterialButton(
             onPressed: () async {
@@ -139,7 +179,16 @@ class _crudState extends State<crud> {
                   .update({'name': newWorkoutName});
               Navigator.pop(context); // Close the dialog
             },
-            child: Text('Save'),
+            child: Text(
+              'Save',
+              style: TextStyle(
+                  color: Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              )),
+            ),
           ),
         ],
       ),
@@ -151,80 +200,95 @@ class _crudState extends State<crud> {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
-          title: Text('Workout'),
+          backgroundColor: const Color.fromARGB(255, 28, 28, 30),
+          title: Text(
+            'Create Workout',
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            )),
+          ),
+          centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: createNewWorkout,
-          child: Icon(Icons.add),
-        ),
-        body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('workouts').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            }
-            var workouts = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: workouts.length,
-              itemBuilder: (context, index) => Slidable(
-                endActionPane: ActionPane(motion: StretchMotion(), children: [
-                  SlidableAction(
-                    onPressed: (context) {
-                      editWorkout(index, snapshot);
-                    },
-                    backgroundColor: const Color.fromARGB(255, 66, 66, 66),
-                    icon: Icons.settings,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  SlidableAction(
-                    onPressed: (context) {
-                      deleteWorkout(index, snapshot);
-                    },
-                    backgroundColor: Color.fromARGB(255, 240, 39, 39),
-                    icon: Icons.delete,
-                    borderRadius: BorderRadius.circular(10.0),
-                  )
-                ]),
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  color: workouts[index]['isCompleted']
-                      ? Colors.green
-                      : Color.fromRGBO(74, 74, 74, 0.898),
-                  child: ListTile(
-                    title: Text(
-                      workouts[index]['name'],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                      ),
+            onPressed: createNewWorkout,
+            child: Icon(Icons.add, color: Color.fromARGB(255, 28, 28, 30)),
+            backgroundColor: Color.fromARGB(255, 208, 253, 62)),
+        body: Container(
+          color: Color.fromARGB(255, 28, 28, 30),
+          child: StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('workouts').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              var workouts = snapshot.data!.docs;
+              return ListView.builder(
+                itemCount: workouts.length,
+                itemBuilder: (context, index) => Slidable(
+                  endActionPane: ActionPane(motion: StretchMotion(), children: [
+                    SlidableAction(
+                      onPressed: (context) {
+                        editWorkout(index, snapshot);
+                      },
+                      backgroundColor: const Color.fromARGB(255, 66, 66, 66),
+                      icon: Icons.settings,
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Checkbox(
-                          value: workouts[index]['isCompleted'],
-                          onChanged: (value) {
-                            // Handle checkbox change if needed
-                          },
+                    SlidableAction(
+                      onPressed: (context) {
+                        deleteWorkout(index, snapshot);
+                      },
+                      backgroundColor: Color.fromARGB(255, 240, 39, 39),
+                      icon: Icons.delete,
+                      borderRadius: BorderRadius.circular(10.0),
+                    )
+                  ]),
+                  child: Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    color: workouts[index]['isCompleted']
+                        ? Colors.green
+                        : Color.fromRGBO(74, 74, 74, 0.898),
+                    child: ListTile(
+                      title: Text(
+                        workouts[index]['name'],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
                         ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_forward_ios,
-                              color: Colors.white),
-                          onPressed: () => goToExercisePage(
-                            workouts[index]['name'],
-                            workouts[index].id,
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Checkbox(
+                            value: workouts[index]['isCompleted'],
+                            onChanged: (value) {
+                              // Handle checkbox change if needed
+                            },
                           ),
-                        ),
-                      ],
+                          IconButton(
+                            icon: Icon(Icons.arrow_forward_ios,
+                                color: Colors.white),
+                            onPressed: () => goToExercisePage(
+                              workouts[index]['name'],
+                              workouts[index].id,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

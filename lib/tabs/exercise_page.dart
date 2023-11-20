@@ -70,7 +70,17 @@ class _ExercisePageState extends State<ExercisePage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('create new exercise'),
+              backgroundColor: Color.fromARGB(255, 28, 28, 30),
+              title: Text(
+                'create new exercise',
+                style: TextStyle(
+                    color: Color.fromARGB(
+                  255,
+                  208,
+                  253,
+                  62,
+                )),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -113,9 +123,6 @@ class _ExercisePageState extends State<ExercisePage> {
                   //sets
                   TextField(
                     controller: setsController,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 128, 128, 128),
-                    ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Sets",
@@ -126,9 +133,25 @@ class _ExercisePageState extends State<ExercisePage> {
               ),
               actions: [
                 //save
-                MaterialButton(onPressed: cancel, child: Text('Cancel')),
+                MaterialButton(
+                    onPressed: cancel,
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    )),
                 //cancel
-                MaterialButton(onPressed: save, child: Text('Save')),
+                MaterialButton(
+                    onPressed: save,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Color.fromARGB(
+                        255,
+                        208,
+                        253,
+                        62,
+                      )),
+                    )),
               ],
             ));
   }
@@ -282,53 +305,75 @@ class _ExercisePageState extends State<ExercisePage> {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
-          title: Text(widget.workoutName),
+          backgroundColor: Color.fromARGB(255, 28, 28, 30),
+          title: Text(
+            widget.workoutName,
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            )),
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: createNewExercise,
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Color.fromARGB(255, 28, 28, 30),
+          ),
+          backgroundColor: Color.fromARGB(
+            255,
+            208,
+            253,
+            62,
+          ),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('workouts')
-              .doc(widget.workoutDocumentId)
-              .collection('exercises')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            }
-            var exercises = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: exercises.length,
-              itemBuilder: (context, index) {
-                var exerciseData =
-                    exercises[index].data() as Map<String, dynamic>;
-                return ExerciseTile(
-                  exerciseName: exerciseData['exerciseName'] ?? '',
-                  weight: exerciseData['weight'] ?? '',
-                  reps: exerciseData['reps'] ?? '',
-                  sets: exerciseData['sets'] ?? '',
-                  isCompleted: exerciseData['isCompleted'] ?? false,
-                  onCheckboxChanged: (val) {
-                    onCheckBoxChanged(exercises[index].id, val);
-                  },
-                  onDelete: () {
-                    // Call the delete method with the exercise ID
-                    deleteExercise(exercises[index].id);
-                  },
-                  onEdit: () {
-                    editExercise(
-                        exercises[index].id,
-                        exerciseData['exerciseName'],
-                        exerciseData['weight'],
-                        exerciseData['reps'],
-                        exerciseData['sets']);
-                  },
-                );
-              },
-            );
-          },
+        body: Container(
+          color: Color.fromARGB(255, 28, 28, 30),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('workouts')
+                .doc(widget.workoutDocumentId)
+                .collection('exercises')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              var exercises = snapshot.data!.docs;
+              return ListView.builder(
+                itemCount: exercises.length,
+                itemBuilder: (context, index) {
+                  var exerciseData =
+                      exercises[index].data() as Map<String, dynamic>;
+                  return ExerciseTile(
+                    exerciseName: exerciseData['exerciseName'] ?? '',
+                    weight: exerciseData['weight'] ?? '',
+                    reps: exerciseData['reps'] ?? '',
+                    sets: exerciseData['sets'] ?? '',
+                    isCompleted: exerciseData['isCompleted'] ?? false,
+                    onCheckboxChanged: (val) {
+                      onCheckBoxChanged(exercises[index].id, val);
+                    },
+                    onDelete: () {
+                      // Call the delete method with the exercise ID
+                      deleteExercise(exercises[index].id);
+                    },
+                    onEdit: () {
+                      editExercise(
+                          exercises[index].id,
+                          exerciseData['exerciseName'],
+                          exerciseData['weight'],
+                          exerciseData['reps'],
+                          exerciseData['sets']);
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

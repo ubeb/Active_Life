@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coba/login/loginPage.dart';
 import 'package:coba/tabs/editProfile.dart';
 import 'package:coba/tabs/fcm.dart';
 import 'package:coba/tabs/privacyPolicy.dart';
@@ -22,20 +23,41 @@ class _profileState extends State<profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Logout"),
-          content: Text("Are you sure you want to logout?"),
+          backgroundColor: Color.fromARGB(255, 28, 28, 30),
+          title: Text(
+            "Logout",
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            )),
+          ),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: TextStyle(color: Colors.white),
+          ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Logout"),
+              child: Text(
+                "Logout",
+                style: TextStyle(color: Colors.red),
+              ),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return LoginPage();
+                }));
               },
             ),
           ],
@@ -56,15 +78,8 @@ class _profileState extends State<profile> {
       }
     }
 
-    // Set background color based on gender
-    Color backgroundColor = Colors.blue; // Default to blue
-    if (gender.toLowerCase() == 'Perempuan') {
-      backgroundColor = Colors.pink;
-    }
-
     return CircleAvatar(
       radius: 40,
-      backgroundColor: backgroundColor,
       child: Text(
         initials,
         style: TextStyle(
@@ -99,324 +114,394 @@ class _profileState extends State<profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
+        automaticallyImplyLeading: false,
+        title: Text('My Profile',
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            ))),
+        backgroundColor: const Color.fromARGB(255, 28, 28, 30),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  alignment: AlignmentDirectional.centerStart,
-                  child: StreamBuilder(
-                    stream: userName,
-                    builder: ((context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text("Loading...");
-                      }
-                      var docs = snapshot.data!.docs;
-                      if (docs.isNotEmpty) {
-                        String userNameE = docs.first['name'];
-                        return buildprofilePicture(userNameE, 'Perempuan');
-                      } else {
-                        return const Text("No user data found");
-                      }
-                    }),
-                  ),
-                ),
-                Column(
-                  children: [
-                    StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .where('uid', isEqualTo: user.uid)
-                          .snapshots(),
-                      builder:
-                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      body: Container(
+        color: Color.fromARGB(255, 28, 28, 30),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    alignment: AlignmentDirectional.centerStart,
+                    child: StreamBuilder(
+                      stream: userName,
+                      builder: ((context, snapshot) {
                         if (snapshot.hasError) {
-                          return Text('Something went wrong');
+                          return const Text('Something went wrong');
                         }
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Text("Loading...");
                         }
-                        if (snapshot.hasData) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!.docs.first['name'],
-                                style: TextStyle(fontSize: 22),
-                              ),
-                              Text(
-                                snapshot.data!.docs.first['email'],
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w300),
-                              )
-                            ],
-                          );
+                        var docs = snapshot.data!.docs;
+                        if (docs.isNotEmpty) {
+                          String userNameE = docs.first['name'];
+                          return buildprofilePicture(userNameE, 'Perempuan');
                         } else {
-                          return Text('No data found2');
+                          return const Text("No user data found");
                         }
-                      },
+                      }),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    'Weight',
-                    style: TextStyle(fontSize: 20),
                   ),
-                ),
-                Container(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    'Height',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                Container(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    'Age   ',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Column(
-              children: [
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .where('uid', isEqualTo: user.uid)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            snapshot.data!.docs.first['weight'].toString(),
-                            style: TextStyle(
-                                fontSize: 19,
-                                color: Color.fromARGB(255, 123, 123, 123)),
-                          ),
-                          Text(
-                            snapshot.data!.docs.first['height'].toString(),
-                            style: TextStyle(
-                                fontSize: 19,
-                                color: Color.fromARGB(255, 123, 123, 123)),
-                          ),
-                          Text(
-                            snapshot.data!.docs.first['age'].toString(),
-                            style: TextStyle(
-                                fontSize: 19,
-                                color: Color.fromARGB(255, 123, 123, 123)),
-                          )
-                        ],
-                      );
-                    } else {
-                      return Text('No data found2');
-                    }
-                  },
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                Container(
-                  width: 320,
-                  height: 190,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: Offset(0, 3),
+                  Column(
+                    children: [
+                      StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .where('uid', isEqualTo: user.uid)
+                            .snapshots(),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text(
+                              'Something went wrong',
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasData) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!.docs.first['name'],
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: Color.fromARGB(
+                                        255,
+                                        208,
+                                        253,
+                                        62,
+                                      )),
+                                ),
+                                Text(
+                                  snapshot.data!.docs.first['email'],
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.white),
+                                )
+                              ],
+                            );
+                          } else {
+                            return Text('No data found2');
+                          }
+                        },
                       ),
                     ],
-                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          'User setting',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black54),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Column(
+                children: [
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .where('uid', isEqualTo: user.uid)
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  'Weight',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  snapshot.data!.docs.first['weight']
+                                          .toString() +
+                                      ' kg',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color:
+                                          Color.fromARGB(255, 123, 123, 123)),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  'Height',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  snapshot.data!.docs.first['height']
+                                          .toString() +
+                                      ' cm',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color:
+                                          Color.fromARGB(255, 123, 123, 123)),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  'Age',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  snapshot.data!.docs.first['age'].toString() +
+                                      ' y/o',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color:
+                                          Color.fromARGB(255, 123, 123, 123)),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      } else {
+                        return Text('No data found2');
+                      }
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Column(
+                children: [
+                  Container(
+                    width: 320,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(0, 3),
                         ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text(
-                          'Edit Profile',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
+                      ],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'User setting',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black54),
+                          ),
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileEditPage(
-                                name: userNameE,
-                                email: userEmail,
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('users')
+                                      .where('uid', isEqualTo: user.uid)
+                                      .snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }
+                                    if (snapshot.hasData) {
+                                      final name =
+                                          snapshot.data!.docs.first['name'];
+                                      final email =
+                                          snapshot.data!.docs.first['email'];
+                                      return ProfileEditPage(
+                                          name: name, email: email);
+                                    } else {
+                                      return Text('No data found');
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.notifications),
-                        title: Text(
-                          'Notifications',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
+                            );
+                          },
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => fcm(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: 320,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          'Security setting',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black54),
+                        ListTile(
+                          leading: Icon(Icons.notifications),
+                          title: Text(
+                            'Notifications',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => fcm(),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.lock),
-                        title: Text(
-                          'Change Password',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
-                        ),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => resetpass(),
-                            ),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.privacy_tip),
-                        title: Text(
-                          'Privacy Policy',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
-                        ),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => privacy(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: 320,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 2, color: Colors.red),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: GestureDetector(
-                      child: Text(
-                        'logout',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.red,
-                        ),
-                      ),
-                      onTap: () => logout(context),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text('version 1.0.0'),
-                SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
-          ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: 320,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Security setting',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black54),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.lock),
+                          title: Text(
+                            'Change Password',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => resetpass(),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.privacy_tip),
+                          title: Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w400),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => privacy(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    width: 320,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 30),
+                      border: Border.all(width: 2, color: Colors.red),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: GestureDetector(
+                        child: Text(
+                          'logout',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                          ),
+                        ),
+                        onTap: () => logout(context),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'version 1.0.0',
+                    style: TextStyle(
+                        color: Color.fromARGB(
+                      255,
+                      208,
+                      253,
+                      62,
+                    )),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

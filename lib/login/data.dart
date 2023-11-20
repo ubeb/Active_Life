@@ -55,177 +55,252 @@ class _DataPageState extends State<DataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              // Date Picker for Age
-              SizedBox(
-                height: 64,
-              ),
-              Text(
-                "Active Life",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 92,
-              ),
-              InkWell(
-                onTap: () {
-                  _selectDate(context);
-                },
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: ageController,
-                    decoration: InputDecoration(
-                      labelText: 'Umur',
-                      prefixIcon: Icon(Icons.calendar_today), // Calendar icon
-                    ),
-                    keyboardType: TextInputType.number,
+      body: Container(
+        color: Color.fromARGB(255, 28, 28, 30),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 64,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              // Dropdown for Gender
-              DropdownButtonFormField<String>(
-                value: gender,
-                onChanged: (value) {
-                  setState(() {
-                    gender = value;
-                  });
-                },
-                items: ['Laki-laki', 'Perempuan']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: InputDecoration(
-                  labelText: 'Pilih Gender',
-                  prefixIcon: Icon(Icons.people), // People icon
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              // TextFormField for Height
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Pilih Tinggi Badan',
-                        prefixIcon: Icon(Icons.height), // Height icon
+                  Text(
+                    "Active Life",
+                    style: TextStyle(
+                      color: Color.fromARGB(
+                        255,
+                        208,
+                        253,
+                        62,
                       ),
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 92,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: ageController,
+                        style: TextStyle(
+                            color: Colors.white), // Set text color to white
+                        decoration: InputDecoration(
+                          labelText: 'Umur',
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            color: Colors.white, // Set icon color to white
+                          ),
+                          fillColor: Colors.white,
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          hintStyle: TextStyle(color: Colors.white),
+                          floatingLabelStyle: TextStyle(color: Colors.white),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color:
+                                  Colors.white, // Set underline color to white
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Dropdown for Gender
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Color.fromARGB(255, 59, 59, 61),
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: gender,
                       onChanged: (value) {
                         setState(() {
-                          height = int.tryParse(value) ?? 0;
+                          gender = value;
                         });
                       },
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(
-                          10), // Adjust the radius as needed
-                    ),
-                    width: 45,
-                    height: 45,
-                    child: Center(
-                      // Center the text within the container
-                      child: Text(
-                        'Cm',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                      items: ['Laki-laki', 'Perempuan']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,
+                              style: TextStyle(color: Colors.white)),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(
+                        labelText: 'Pilih Gender',
+                        prefixIcon: Icon(Icons.people, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
                         ),
                       ),
+                      style: TextStyle(color: Colors.white), // Set text color
                     ),
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              // TextFormField for Weight
-              Row(
-                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Pilih Tinggi Badan',
+                            prefixIcon: Icon(Icons.height,
+                                color: Colors.white), // Set icon color to white
+                            labelStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .white, // Set underline color to white
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              height = int.tryParse(value) ?? 0;
+                            });
+                          },
+                          style: TextStyle(
+                              color: Colors.white), // Set text color to white
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 208, 253, 62),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: 45,
+                        height: 45,
+                        child: Center(
+                          child: Text(
+                            'Cm',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 28, 28, 30),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   // TextFormField for Weight
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Pilih Berat Badan',
-                        prefixIcon:
-                            Icon(Icons.fitness_center), // Fitness center icon
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          weight = int.tryParse(value) ?? 0;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(
-                          10), // Adjust the radius as needed
-                    ),
-                    width: 45,
-                    height: 45,
-                    child: Center(
-                      // Center the text within the container
-                      child: Text(
-                        'Kg',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'Pilih Berat Badan',
+                            prefixIcon: Icon(
+                              Icons.fitness_center,
+                              color: Colors.white, // Set icon color to white
+                            ),
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .white, // Set underline color to white
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              weight = int.tryParse(value) ?? 0;
+                            });
+                          },
+                          style: TextStyle(
+                            color: Colors.white, // Set text color to white
+                          ),
                         ),
                       ),
-                    ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 208, 253, 62),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: 45,
+                        height: 45,
+                        child: Center(
+                          child: Text(
+                            'Kg',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 28, 28, 30),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await usersCollection.doc().set({
-                    'name': widget.name,
-                    'email': widget.email,
-                    'age': ageController.text,
-                    'gender': gender,
-                    'height': height,
-                    'weight': weight,
-                    'uid': widget.uid,
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Tabs(
-                        userData: {},
+
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(
+                        255,
+                        208,
+                        253,
+                        62,
                       ),
                     ),
-                  );
-                },
-                child: Text('Lanjutkan'),
+                    onPressed: () async {
+                      await usersCollection.doc().set({
+                        'name': widget.name,
+                        'email': widget.email,
+                        'age': ageController.text,
+                        'gender': gender,
+                        'height': height,
+                        'weight': weight,
+                        'uid': widget.uid,
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Tabs(
+                            userData: {},
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Lanjutkan',
+                      style: TextStyle(color: Color.fromARGB(255, 28, 28, 30)),
+                    ),
+                  ),
+                  SizedBox(height: 177), // Add space after the button
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

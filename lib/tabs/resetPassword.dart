@@ -27,14 +27,36 @@ class _resetpassState extends State<resetpass> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Success'),
-          content: Text('Password reset email sent. Check your email.'),
+          backgroundColor: Color.fromARGB(255, 28, 28, 30),
+          title: Text(
+            'Success',
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            )),
+          ),
+          content: Text(
+            'Password reset email sent. Check your email.',
+            style: TextStyle(color: Colors.white),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                    color: Color.fromARGB(
+                  255,
+                  208,
+                  253,
+                  62,
+                )),
+              ),
             ),
           ],
         );
@@ -66,31 +88,59 @@ class _resetpassState extends State<resetpass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 28, 28, 30),
+        title: Text('Reset Password',
+            style: TextStyle(
+                color: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            ))),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _resetPassword,
-                child: Text('Reset Password'),
-              ),
-            ],
+      body: Container(
+        color: Color.fromARGB(255, 28, 28, 30),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  style: TextStyle(color: Colors.white),
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white), // Set the border color here
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white), // Set the border color here
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 208, 253, 62),
+                    onPrimary: Color.fromARGB(255, 28, 28, 30),
+                  ),
+                  onPressed: _resetPassword,
+                  child: Text('Reset Password'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

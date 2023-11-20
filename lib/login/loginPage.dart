@@ -1,3 +1,5 @@
+import 'package:coba/tabs/Homepage.dart';
+import 'package:coba/tabs/resetPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './signupPage.dart';
@@ -69,7 +71,15 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      // If login is successful, navigate to the homepage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => homepage()),
+      );
     } on FirebaseAuthException catch (e) {
       // Handle specific authentication errors and show user-friendly messages
       if (e.code == 'user-not-found') {
@@ -78,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
         showErrorMessage(context, "Incorrect password. Please try again.");
       } else if (e.code == 'invalid-email') {
         showErrorMessage(
-            context, "Invalid email address. Please enter a valid email.");
+          context,
+          "Invalid email address. Please enter a valid email.",
+        );
       } else {
         showErrorMessage(context, "An error occurred: ${e.message}");
       }
@@ -99,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 28, 28, 30),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -110,7 +122,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Active Life",
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: Color.fromARGB(
+                        255,
+                        208,
+                        253,
+                        62,
+                      ),
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
@@ -122,23 +139,34 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromARGB(255, 208, 253, 62))),
                       child: Text(
                         "Login",
                         style: TextStyle(
-                          color: _pageLogin ? Colors.white : Colors.black,
+                          color: _pageLogin
+                              ? Color.fromARGB(255, 28, 28, 30)
+                              : Colors.white,
                         ),
                       ),
                       onPressed: () {
                         _togglePage(true);
                       },
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
                     ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromARGB(255, 208, 253, 62))),
                       child: Text(
                         "SignUp",
                         style: TextStyle(
                           color: _pageLogin
-                              ? Color.fromRGBO(0, 0, 0, 1)
-                              : Colors.white,
+                              ? Colors.grey[600]
+                              : Color.fromARGB(255, 28, 28, 30),
                         ),
                       ),
                       onPressed: () {
@@ -156,8 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextField(
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 128, 128, 128)),
+                            style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Email",
@@ -167,19 +194,41 @@ class _LoginPageState extends State<LoginPage> {
                           TextField(
                             controller: passwordController,
                             obscureText: _isHidden,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 128, 128, 128)),
+                            style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                icon: Icon(_isHidden
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
+                                icon: Icon(
+                                  _isHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.white,
+                                ),
                                 onPressed: _toggleVisibility,
                               ),
                               border: InputBorder.none,
                               hintText: "Password",
                               hintStyle: TextStyle(
                                 color: Colors.grey[400],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => resetpass()),
+                              );
+                            },
+                            child: Text(
+                              "Forget Password?",
+                              style: TextStyle(
+                                color: Color.fromARGB(
+                                  255,
+                                  208,
+                                  253,
+                                  62,
+                                ),
                               ),
                             ),
                           ),
@@ -190,6 +239,12 @@ class _LoginPageState extends State<LoginPage> {
                             child: ElevatedButton(
                               onPressed: _login,
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: Color.fromARGB(
+                                  255,
+                                  208,
+                                  253,
+                                  62,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50),
                                 ),
@@ -202,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text(
                                     "Login",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Color.fromARGB(255, 28, 28, 30),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

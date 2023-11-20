@@ -18,6 +18,7 @@ void main() async {
   );
   await FirebaseApi().initNotifications();
   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +38,64 @@ class MyApp extends StatelessWidget {
           '/notifpage': (context) => fcm(),
           '/workout': (context) => crud(),
         },
-        theme: ThemeData(fontFamily: 'Geometria'),
+        theme: ThemeData(
+          radioTheme: RadioThemeData(
+            fillColor: MaterialStateProperty.all(
+              Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              ),
+            ),
+          ),
+          tabBarTheme: TabBarTheme(
+            labelColor: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            ),
+            unselectedLabelColor: Colors.white,
+          ),
+          switchTheme: SwitchThemeData(
+            thumbColor: MaterialStateProperty.all(
+              Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              ),
+            ),
+            trackColor: MaterialStateProperty.all(
+              Colors.grey[400],
+            ),
+          ),
+          // Modify text cursor color
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Color.fromARGB(
+              255,
+              208,
+              253,
+              62,
+            ), // Change this to your desired text cursor color
+          ),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(
+                  secondary: Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              ))
+              .copyWith(
+                  secondary: Color.fromARGB(
+                255,
+                208,
+                253,
+                62,
+              )),
+        ),
         home: Scaffold(
           body: splash(),
         ),
