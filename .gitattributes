@@ -4,3 +4,4 @@
 *.js linguist-detectable=false
 *.html linguist-detectable=false
 *.makefile linguist-detectable=false
+*.dart linguist-language=Dart
