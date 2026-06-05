@@ -1,0 +1,16 @@
+# Block all Makefiles anywhere in the project from stats
+*makefile* linguist-detectable=false
+*Makefile* linguist-detectable=false
+**/*makefile* linguist-detectable=false
+**/*Makefile* linguist-detectable=false
+*.mk linguist-detectable=false
+
+# Block other non-Flutter bloat
+*.csharp linguist-detectable=false
+*.java linguist-detectable=false
+*.xml linguist-detectable=false
+*.js linguist-detectable=false
+*.html linguist-detectable=false
+
+# Enforce Dart as the dominant language
+*.dart linguist-language=Dart

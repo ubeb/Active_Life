@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755089498376",
+    "project_id": "active-life-b2eb7",
+    "storage_bucket": "active-life-b2eb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755089498376:android:4c520fe7fff605c506ccbd",
+        "android_client_info": {
+          "package_name": "com.example.coba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0SW4dMtibfFwN7puzVf1dHP1Gz7TC7NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
